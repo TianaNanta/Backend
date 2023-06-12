@@ -5,8 +5,10 @@ from app.database import AsyncSession, get_async_session
 from app.users.models import User, get_user_db
 from fastapi import Depends, Request
 from fastapi_users import BaseUserManager, IntegerIDMixin
-from sqlalchemy import select, delete
+from sqlalchemy import select, delete, update
 from sqlalchemy.orm import joinedload
+
+from app.users.schemas import UserUpdate
 
 
 class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
@@ -77,3 +79,12 @@ class UserDAO:
         await self.session.execute(
             delete(User).where(User.id == id),
         )
+
+    # update current user
+    async def update_user(self, id: int, user: UserUpdate) -> User:
+        """Update current user"""
+        await self.session.execute(
+            update(User).where(User.id == id).values(**user.dict()),
+        )
+
+        return await self.get_user(id)
