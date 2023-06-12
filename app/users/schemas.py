@@ -1,7 +1,28 @@
 from datetime import date
 from typing import Union
+from pydantic import BaseModel
 
 from fastapi_users import schemas
+
+
+class GenderRead(BaseModel):
+    id: int
+    name: str
+
+    class Config:
+        orm_mode = True
+
+
+class UsersRead(schemas.BaseUser[int]):
+    """User model for reading."""
+
+    full_name: str
+    birthday: Union[date, None] = None
+    gender_id: int
+    gender: GenderRead
+    phone: str
+    profile_pic: Union[str, None] = None
+    cover_pic: Union[str, None] = None
 
 
 class UserRead(schemas.BaseUser[int]):
