@@ -1,12 +1,17 @@
-from typing import List, Optional
+from typing import List
+from typing import Optional
 
-from fastapi import Depends, Request
-from fastapi_users import BaseUserManager, IntegerIDMixin
+from fastapi import Depends
+from fastapi import Request
+from fastapi_users import BaseUserManager
+from fastapi_users import IntegerIDMixin
 from sqlalchemy import select
 
 from app.core.config import settings
-from app.database import AsyncSession, get_async_session
-from app.users.models import User, get_user_db
+from app.database import AsyncSession
+from app.database import get_async_session
+from app.users.models import get_user_db
+from app.users.models import User
 
 
 class UserManager(IntegerIDMixin, BaseUserManager[User, int]):

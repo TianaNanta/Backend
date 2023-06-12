@@ -1,11 +1,15 @@
 from typing import List
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter
+from fastapi import Depends
 
 from app.users.crud import UserDAO
-from app.users.jwtauth import auth_backend, fastapi_users
+from app.users.jwtauth import auth_backend
+from app.users.jwtauth import fastapi_users
 from app.users.models import User
-from app.users.schemas import UserCreate, UserRead, UserUpdate
+from app.users.schemas import UserCreate
+from app.users.schemas import UserRead
+from app.users.schemas import UserUpdate
 
 router = APIRouter()
 

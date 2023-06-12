@@ -1,6 +1,9 @@
-from typing import Any, Dict, Optional
+from typing import Any
+from typing import Dict
+from typing import Optional
 
-from pydantic import BaseSettings, validator
+from pydantic import BaseSettings
+from pydantic import validator
 
 
 class Settings(BaseSettings):
