@@ -9,7 +9,7 @@ class UserRead(schemas.BaseUser[int]):
 
     full_name: str
     birthday: Union[date, None] = None
-    gender_id: str
+    gender_id: int
     phone: str
     profile_pic: Union[str, None] = None
     cover_pic: Union[str, None] = None
@@ -20,7 +20,7 @@ class UserCreate(schemas.BaseUserCreate):
 
     full_name: str
     birthday: Union[date, None] = None
-    gender: str
+    gender_id: int
     phone: str
     profile_pic: Union[str, None] = None
     cover_pic: Union[str, None] = None
@@ -31,7 +31,7 @@ class UserUpdate(schemas.BaseUserUpdate):
 
     full_name: str
     birthday: Union[date, None] = None
-    gender_id: str
+    gender_id: int
     phone: str
     profile_pic: Union[str, None] = None
     cover_pic: Union[str, None] = None
