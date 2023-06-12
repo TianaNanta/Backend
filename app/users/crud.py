@@ -1,11 +1,12 @@
 from typing import List, Optional
 
-from app.core.config import settings
-from app.database import AsyncSession, get_async_session
-from app.users.models import User, get_user_db
 from fastapi import Depends, Request
 from fastapi_users import BaseUserManager, IntegerIDMixin
 from sqlalchemy import select
+
+from app.core.config import settings
+from app.database import AsyncSession, get_async_session
+from app.users.models import User, get_user_db
 
 
 class UserManager(IntegerIDMixin, BaseUserManager[User, int]):

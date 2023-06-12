@@ -1,10 +1,11 @@
 from typing import List
 
-from app.database import AsyncSession, Base, async_session_maker, get_async_session
 from fastapi import Depends
 from fastapi_users.db import SQLAlchemyBaseUserTable, SQLAlchemyUserDatabase
 from sqlalchemy import Date, ForeignKey, Integer, String, select
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+
+from app.database import AsyncSession, Base, async_session_maker, get_async_session
 
 
 class User(SQLAlchemyBaseUserTable[int], Base):

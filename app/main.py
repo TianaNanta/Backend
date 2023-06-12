@@ -1,9 +1,10 @@
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+
 from app.core.config import settings
 from app.database import create_db_and_tables
 from app.router import r
 from app.users.models import create_gender
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
 
 
 def get_application() -> FastAPI:

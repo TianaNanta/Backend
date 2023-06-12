@@ -1,12 +1,13 @@
-from app.core.config import settings
-from app.users.crud import get_user_manager
-from app.users.models import User
 from fastapi_users import FastAPIUsers
 from fastapi_users.authentication import (
     AuthenticationBackend,
     BearerTransport,
     JWTStrategy,
 )
+
+from app.core.config import settings
+from app.users.crud import get_user_manager
+from app.users.models import User
 
 bearer_transport = BearerTransport(tokenUrl="api/v1/users/auth/jwt/login")
 
