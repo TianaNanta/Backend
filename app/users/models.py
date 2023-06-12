@@ -1,5 +1,3 @@
-from typing import List
-
 from app.database import AsyncSession, Base, async_session_maker, get_async_session
 from fastapi import Depends
 from fastapi_users.db import SQLAlchemyBaseUserTable, SQLAlchemyUserDatabase
@@ -10,7 +8,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 class User(SQLAlchemyBaseUserTable[int], Base):
     """User model"""
 
-    __tablename__ = "users"
+    __tablename__ = "users"  # type: ignore
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)  # type: ignore
     full_name: Mapped[str] = mapped_column(String(250), index=True, nullable=False)
@@ -25,16 +23,19 @@ class User(SQLAlchemyBaseUserTable[int], Base):
 class Gender(Base):
     """Gender model"""
 
-    __tablename__ = "gender"
+    __tablename__ = "gender"  # type: ignore
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
     name: Mapped[str] = mapped_column(String(250), index=True, nullable=False)
-    owner: Mapped[List["User"]] = relationship(back_populates="gender")
+    owner: Mapped["User"] = relationship(back_populates="gender")
+
+    def __repr__(self) -> str:
+        return self.name
 
 
 async def get_user_db(  # type: ignore
     session: AsyncSession = Depends(get_async_session),
-) -> SQLAlchemyUserDatabase[User, int]:  # type: ignore
+):  # type: ignore
     yield SQLAlchemyUserDatabase(session, User)
 
 
@@ -48,8 +49,8 @@ async def create_gender() -> None:
             return
 
         gender = [
-            Gender(name="Male"),
-            Gender(name="Female"),
+            Gender(name="Male"),  # type: ignore
+            Gender(name="Female"),  # type: ignore
         ]
         session.add_all(gender)
         await session.commit()

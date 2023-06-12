@@ -1,6 +1,5 @@
-from typing import Any, Dict, Optional
-
-from pydantic import BaseSettings, validator
+from pydantic import BaseSettings
+from yarl import URL
 
 
 class Settings(BaseSettings):
@@ -10,17 +9,18 @@ class Settings(BaseSettings):
     MYSQL_USER: str = "root"
     MYSQL_PASSWORD: str = "password"
     MYSQL_HOST: str = "localhost"
-    MYSQL_PORT: str = "3306"
+    MYSQL_PORT: int = 3306
     MYSQL_DATABASE: str = "fastapi"
-    DATABASE_URI: str = None  # type: ignore
 
-    @validator("DATABASE_URI", pre=True)
-    def assemble_db_connection(cls, v: Optional[str], values: Dict[str, Any]) -> Any:
-        if isinstance(v, str):
-            return v
-        return (
-            f"mysql+aiomysql://{values.get('MYSQL_USER')}:{values.get('MYSQL_PASSWORD')}@{values.get('MYSQL_HOST')}:"
-            f"{values.get('MYSQL_PORT')}/{values.get('MYSQL_DATABASE')}"
+    @property
+    def DATABASE_URI(self) -> URL:
+        return URL.build(
+            scheme="mysql+aiomysql",
+            user=self.MYSQL_USER,
+            password=self.MYSQL_PASSWORD,
+            host=self.MYSQL_HOST,
+            port=self.MYSQL_PORT,
+            path=f"/{self.MYSQL_DATABASE}",
         )
 
     class Config:

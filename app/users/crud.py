@@ -6,6 +6,7 @@ from app.users.models import User, get_user_db
 from fastapi import Depends, Request
 from fastapi_users import BaseUserManager, IntegerIDMixin
 from sqlalchemy import select
+from sqlalchemy.orm import joinedload
 
 
 class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
@@ -36,7 +37,7 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
         print(f"Verification requested for user {user.id}. Verification token: {token}")
 
 
-async def get_user_manager(user_db=Depends(get_user_db)) -> UserManager:  # type: ignore
+async def get_user_manager(user_db=Depends(get_user_db)):  # type: ignore
     yield UserManager(user_db)
 
 
@@ -56,7 +57,7 @@ class UserDAO:
         :return: stream of users.
         """
         raw_users = await self.session.execute(
-            select(User).limit(limit).offset(offset),
+            select(User).options(joinedload(User.gender)).limit(limit).offset(offset),
         )
 
         return list(raw_users.scalars().fetchall())
