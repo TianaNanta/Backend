@@ -5,7 +5,7 @@ from app.database import AsyncSession, get_async_session
 from app.users.models import User, get_user_db
 from fastapi import Depends, Request
 from fastapi_users import BaseUserManager, IntegerIDMixin
-from sqlalchemy import select
+from sqlalchemy import select, delete
 from sqlalchemy.orm import joinedload
 
 
@@ -70,3 +70,10 @@ class UserDAO:
         )
 
         return current_user.scalars().first()  # type: ignore
+
+    # delete current user
+    async def delete_user(self, id: int) -> None:
+        """Delete current user"""
+        await self.session.execute(
+            delete(User).where(User.id == id),
+        )
