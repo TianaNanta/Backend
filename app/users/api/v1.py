@@ -3,7 +3,7 @@ from typing import List
 from app.users.crud import UserDAO
 from app.users.jwtauth import auth_backend, fastapi_users
 from app.users.models import User
-from app.users.schemas import UserCreate, UserRead, UserUpdate
+from app.users.schemas import UserCreate, UserRead, UserUpdate, UsersRead
 from fastapi import APIRouter, Depends
 
 router = APIRouter()
@@ -46,7 +46,7 @@ router.include_router(
 
 
 # get all users route
-@router.get("/", response_model=list[UserRead])
+@router.get("/", response_model=list[UsersRead])
 async def get_all_users(
     limit: int = 10,
     offset: int = 0,
