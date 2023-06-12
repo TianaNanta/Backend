@@ -10,7 +10,6 @@ class UserRead(schemas.BaseUser[int]):
     full_name: str
     birthday: Union[date, None] = None
     gender_id: int
-    gender: str
     phone: str
     profile_pic: Union[str, None] = None
     cover_pic: Union[str, None] = None
