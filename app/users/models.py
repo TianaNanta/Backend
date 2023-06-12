@@ -23,10 +23,11 @@ class User(SQLAlchemyBaseUserTable[int], Base):
 
     __tablename__ = "users"  # type: ignore
 
-    id: Mapped[int] = mapped_column(
-        Integer, primary_key=True, index=True
-    )  # type: ignore
-    full_name: Mapped[str] = mapped_column(String(250), index=True, nullable=False)
+    id: Mapped[int] = mapped_column(Integer, primary_key=True,
+                                    index=True)  # type: ignore
+    full_name: Mapped[str] = mapped_column(String(250),
+                                           index=True,
+                                           nullable=False)
     gender_id: Mapped[int] = mapped_column(ForeignKey("gender.id"))
     gender: Mapped["Gender"] = relationship(back_populates="owner")
     birthday: Mapped[Date] = mapped_column(Date, nullable=False)
@@ -54,8 +55,7 @@ class Gender(Base):
 
 
 async def get_user_db(  # type: ignore
-    session: AsyncSession = Depends(get_async_session),
-):  # type: ignore
+        session: AsyncSession = Depends(get_async_session), ):  # type: ignore
     yield SQLAlchemyUserDatabase(session, User)
 
 
