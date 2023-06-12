@@ -3,7 +3,7 @@ from typing import List
 from app.users.crud import UserDAO
 from app.users.jwtauth import auth_backend, fastapi_users
 from app.users.models import User
-from app.users.schemas import UserCreate, UserRead, UserUpdate, UsersRead
+from app.users.schemas import UserCreate, UserRead, UsersRead
 from fastapi import APIRouter, Depends
 
 router = APIRouter()
@@ -65,8 +65,19 @@ async def get_all_users(
     return await user_dao.get_all_users(limit=limit, offset=offset)
 
 
-# user route
-router.include_router(
-    fastapi_users.get_users_router(UserRead, UserUpdate),
-    tags=["Users"],
-)
+# get user by id route
+@router.get("/{user_id}", response_model=UserRead)
+async def get_user_by_id(
+    user_id: int,
+    user_dao: UserDAO = Depends(),
+) -> User:
+    """Retrieve user by id.
+
+    Args:
+        user_id (int): id of user.
+        user_dao (UserDAO, optional): DAO for user models. Defaults to Depends().
+
+    Returns:
+        User: user object from database.
+    """
+    return await user_dao.get_user(id=user_id)
