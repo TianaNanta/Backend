@@ -1,8 +1,8 @@
 from datetime import date
 from typing import Union
-from pydantic import BaseModel
 
 from fastapi_users import schemas
+from pydantic import BaseModel
 
 
 class GenderRead(BaseModel):
