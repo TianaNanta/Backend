@@ -53,9 +53,9 @@ router.include_router(
 # get all users route
 @router.get("/", response_model=list[UserRead])
 async def get_all_users(
-    limit: int = 10,
-    offset: int = 0,
-    user_dao: UserDAO = Depends(),
+        limit: int = 10,
+        offset: int = 0,
+        user_dao: UserDAO = Depends(),
 ) -> List[User]:
     """Retrieve all the users in the database
 

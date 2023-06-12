@@ -31,7 +31,8 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
         token: str,
         request: Optional[Request] = None,
     ) -> None:
-        print(f"User {user.id} has forgot their password. Reset token: {token}")
+        print(
+            f"User {user.id} has forgot their password. Reset token: {token}")
 
     async def on_after_request_verify(
         self,
@@ -39,10 +40,13 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
         token: str,
         request: Optional[Request] = None,
     ) -> None:
-        print(f"Verification requested for user {user.id}. Verification token: {token}")
+        print(
+            f"Verification requested for user {user.id}. Verification token: {token}"
+        )
 
 
-async def get_user_manager(user_db=Depends(get_user_db)) -> UserManager:  # type: ignore
+async def get_user_manager(user_db=Depends(
+    get_user_db)) -> UserManager:  # type: ignore
     yield UserManager(user_db)
 
 
@@ -62,8 +66,7 @@ class UserDAO:
         :return: stream of users.
         """
         raw_users = await self.session.execute(
-            select(User).limit(limit).offset(offset),
-        )
+            select(User).limit(limit).offset(offset), )
 
         return list(raw_users.scalars().fetchall())
 
@@ -71,7 +74,6 @@ class UserDAO:
     async def get_user(self, id: int) -> User:
         """Get current user"""
         current_user = await self.session.execute(
-            select(User).where(User.id == id),
-        )
+            select(User).where(User.id == id), )
 
         return current_user.scalars().first()  # type: ignore
