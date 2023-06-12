@@ -4,14 +4,13 @@ services:
   app:
     build: .
     env_file:
-    - .env
+      - .env
     ports:
-    - "8000:8000"
-
+      - "8000:8000"
 
   database:
     image: mysql:5.7
     env_file:
-    - .env
+      - .env
     ports:
-    - "3306:3306"
+      - "3306:3306"
