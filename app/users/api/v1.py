@@ -1,9 +1,13 @@
 from typing import List
 
 from app.users.crud import UserDAO
-from app.users.jwtauth import auth_backend, fastapi_users
+from app.users.jwtauth import (
+    auth_backend,
+    fastapi_users,
+    current_user,
+)
 from app.users.models import User
-from app.users.schemas import UserCreate, UserRead, UsersRead
+from app.users.schemas import UserCreate, UserRead, UserUpdate, UsersRead
 from fastapi import APIRouter, Depends
 
 router = APIRouter()
@@ -81,3 +85,28 @@ async def get_user_by_id(
         User: user object from database.
     """
     return await user_dao.get_user(id=user_id)
+
+
+# update user by id route
+@router.patch("/me", response_model=UsersRead)
+async def update_current_user(
+    user_update: UserUpdate,
+    user: User = Depends(current_user),
+    user_dao: UserDAO = Depends(),
+) -> User:
+    """Update user by id.
+
+    Args:
+        user_id (int): id of user.
+        user_update (UserCreate): user object to update.
+        user_dao (UserDAO, optional): DAO for user models. Defaults to Depends().
+
+    Returns:
+        User: user object from database.
+    """
+    return await user_dao.update_user(id=user.id, user=user_update)  # type: ignore
+
+
+# router.include_router(
+#     fastapi_users.get_users_router(UserRead, UserUpdate),
+# )
