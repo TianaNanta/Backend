@@ -66,7 +66,7 @@ async def get_all_users(
 
 
 # get user by id route
-@router.get("/{user_id}", response_model=UserRead)
+@router.get("/{user_id}", response_model=UsersRead)
 async def get_user_by_id(
     user_id: int,
     user_dao: UserDAO = Depends(),
