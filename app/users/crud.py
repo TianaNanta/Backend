@@ -8,8 +8,6 @@ from fastapi_users import BaseUserManager, IntegerIDMixin
 from sqlalchemy import select, delete, update
 from sqlalchemy.orm import joinedload
 
-from app.users.schemas import UserUpdate
-
 
 class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
     reset_password_token_secret = settings.SECRET
@@ -81,10 +79,10 @@ class UserDAO:
         )
 
     # update current user
-    async def update_user(self, id: int, user: UserUpdate) -> User:
+    async def update_user(self, id: int, user: User) -> User:
         """Update current user"""
         await self.session.execute(
-            update(User).where(User.id == id).values(**user.dict()),
+            update(User).where(User.id == id).values(**user.dict()),  # type: ignore
         )
 
         return await self.get_user(id)
