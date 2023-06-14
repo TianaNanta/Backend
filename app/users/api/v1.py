@@ -8,7 +8,7 @@ from app.users.jwtauth import (
 )
 from app.users.models import User
 from app.users.schemas import UserCreate, UserRead, UserUpdate, UsersRead
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException, status
 
 router = APIRouter()
 
@@ -87,7 +87,7 @@ async def get_user_by_id(
     return await user_dao.get_user(id=user_id)
 
 
-# update user by id route
+# update current user
 @router.patch("/me", response_model=UsersRead)
 async def update_current_user(
     user_update: UserUpdate,
@@ -105,6 +105,29 @@ async def update_current_user(
         User: user object from database.
     """
     return await user_dao.update_user(id=user.id, user=user_update)  # type: ignore
+
+
+# delete current user
+@router.delete("/me")
+async def delete_current_user(  # type: ignore  # noqa
+    user: User = Depends(current_user),
+    user_dao: UserDAO = Depends(),
+):
+    """Delete user by id.
+
+    Args:
+        user_id (int): id of user.
+        user_dao (UserDAO, optional): DAO for user models. Defaults to Depends().
+
+    Returns:
+        User: user object from database.
+    """
+    await user_dao.delete_user(id=user.id)
+
+    return HTTPException(
+        status_code=status.HTTP_204_NO_CONTENT,
+        detail="User deleted successfully!",
+    )
 
 
 # router.include_router(
