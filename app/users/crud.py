@@ -68,7 +68,7 @@ class UserDAO:
     async def get_user(self, id: int) -> User:
         """Get current user"""
         current_user = await self.session.execute(
-            select(User).where(User.id == id),
+            select(User).where(User.id == id).options(joinedload(User.gender)),
         )
 
         return current_user.scalars().first()  # type: ignore
