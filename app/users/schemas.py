@@ -38,18 +38,18 @@ class UserCreate(schemas.BaseUserCreate):
 
     full_name: str
     birthday: Union[date, None] = None
-    gender_id: int
     phone: str
     profile_pic: Union[str, None] = None
     cover_pic: Union[str, None] = None
+    gender_id: int
 
 
-class UserUpdate(schemas.BaseUserUpdate):
+class UserUpdate(BaseModel):
     """User model for updating."""
 
     full_name: str
     birthday: Union[date, None] = None
-    gender_id: int
     phone: str
     profile_pic: Union[str, None] = None
     cover_pic: Union[str, None] = None
+    gender_id: int
