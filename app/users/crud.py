@@ -5,7 +5,7 @@ from app.database import AsyncSession, get_async_session
 from app.users.models import User, get_user_db
 from fastapi import Depends, Request
 from fastapi_users import BaseUserManager, IntegerIDMixin
-from sqlalchemy import select
+from sqlalchemy import select, delete, update
 from sqlalchemy.orm import joinedload
 
 
@@ -66,7 +66,23 @@ class UserDAO:
     async def get_user(self, id: int) -> User:
         """Get current user"""
         current_user = await self.session.execute(
-            select(User).where(User.id == id),
+            select(User).where(User.id == id).options(joinedload(User.gender)),
         )
 
         return current_user.scalars().first()  # type: ignore
+
+    # delete current user
+    async def delete_user(self, id: int) -> None:
+        """Delete current user"""
+        await self.session.execute(
+            delete(User).where(User.id == id),
+        )
+
+    # update current user
+    async def update_user(self, id: int, user: User) -> User:
+        """Update current user"""
+        await self.session.execute(
+            update(User).where(User.id == id).values(**user.dict()),  # type: ignore
+        )
+
+        return await self.get_user(id)

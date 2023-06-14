@@ -13,27 +13,24 @@ class GenderRead(BaseModel):
         orm_mode = True
 
 
-class UsersRead(schemas.BaseUser[int]):
-    """User model for reading."""
-
-    full_name: str
-    birthday: Union[date, None] = None
-    gender_id: int
-    gender: GenderRead
-    phone: str
-    profile_pic: Union[str, None] = None
-    cover_pic: Union[str, None] = None
-
-
 class UserRead(schemas.BaseUser[int]):
     """User model for reading."""
 
     full_name: str
     birthday: Union[date, None] = None
-    gender_id: int
     phone: str
     profile_pic: Union[str, None] = None
     cover_pic: Union[str, None] = None
+    gender_id: int
+
+
+class UsersRead(UserRead):
+    """User model for reading."""
+
+    gender: GenderRead
+
+    class Config:
+        orm_mode = True
 
 
 class UserCreate(schemas.BaseUserCreate):
@@ -41,18 +38,18 @@ class UserCreate(schemas.BaseUserCreate):
 
     full_name: str
     birthday: Union[date, None] = None
-    gender_id: int
     phone: str
     profile_pic: Union[str, None] = None
     cover_pic: Union[str, None] = None
+    gender_id: int
 
 
-class UserUpdate(schemas.BaseUserUpdate):
+class UserUpdate(BaseModel):
     """User model for updating."""
 
     full_name: str
     birthday: Union[date, None] = None
-    gender_id: int
     phone: str
     profile_pic: Union[str, None] = None
     cover_pic: Union[str, None] = None
+    gender_id: int
